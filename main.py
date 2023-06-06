@@ -46,8 +46,12 @@ def play():
             if color_input.text() in colors and int(dep_input.text()):
                 color_win.setText(color)
                 dep = int(dep_input.text())
-
-                if color_input.text() == color:
+                if dep > money:
+                    msg = QMessageBox()
+                    msg.setWindowTitle("Ошибка")
+                    msg.setText('Недостаточно средств')
+                    msg.exec_()
+                elif color_input.text() == color:
                     money += dep
                     money_label.setText("Счет: " + str(money))
                     result.setText("+ " + str(dep))
@@ -59,6 +63,19 @@ def play():
                 error_message()
                 color_input.clear()
                 dep_input.clear()
+
+            if money <= 0:
+                msg = QMessageBox()
+                msg.setWindowTitle("Конец игры")
+                msg.setText('У вас закончились средства. Вы проиграли!')
+                msg.exec_()
+                ap.closeAllWindows()
+            if money >= money_win:
+                msg = QMessageBox()
+                msg.setWindowTitle("Конец игры")
+                msg.setText('У вас 1000000. Вы выиграли!')
+                msg.exec_()
+                ap.closeAllWindows()
         except Exception as e:
             print(e)
             error_message()
@@ -68,7 +85,7 @@ def play():
         error_message()
         color_input.clear()
         dep_input.clear()
-
+    
 
 v = QVBoxLayout()
 h1 = QHBoxLayout()
